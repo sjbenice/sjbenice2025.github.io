@@ -1412,7 +1412,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const key = 'total_visits';
     
     // Fetch current count
-    fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
+    fetch(`https://countapi.xyz/hit/${namespace}/${key}`)
         .then(response => response.json())
         .then(data => {
             document.getElementById('visitCount').textContent = data.value.toLocaleString();
