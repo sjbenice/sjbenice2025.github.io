@@ -1370,10 +1370,12 @@ gap: 0.5rem;
 <div class="footer-meta">
 <div><i class="fas fa-code"></i> Crafted with passion for game development</div>
 <div><i class="fas fa-gamepad"></i> Specializing in playable ads since 2018</div>
-<div class="visit-counter" style="display: none;">
+
+<div class="visit-counter">
 <i class="fas fa-eye"></i>
 <span>Visits: </span>
-<span id="visitCount" class="counter-number">0</span>
+<span id="visitCount" class="counter-number" style="display: none;">0</span>
+<span align=center><a href='https://www.counter12.com'><img src='https://www.counter12.com/img-dYAz3c4zDcW43dDC-3.gif' border='0' alt='visitas'></a><script type='text/javascript' src='https://www.counter12.com/ad.js?id=dYAz3c4zDcW43dDC'></script></span>
 </div>
 </div>
 </footer>
@@ -1405,14 +1407,14 @@ gap: 0.5rem;
 <script>
 // Set current year in footer
 document.getElementById('year').textContent = new Date().getFullYear();
-
+/*
 // Visit Counter using CountAPI
 document.addEventListener('DOMContentLoaded', function() {
     const namespace = 'steven_portfolio_2026'; // Unique identifier for your site
     const key = 'total_visits';
     
     // Fetch current count
-    fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
+    fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/incr`)
         .then(response => response.json())
         .then(data => {
             document.getElementById('visitCount').textContent = data.value.toLocaleString();
@@ -1422,7 +1424,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('visitCount').textContent = '---';
         });
 });
-
+*/
 // Banner video rotation with sequential playback and content changes
 const bannerVideo = document.getElementById('bannerVideo');
 const bannerDots = document.querySelectorAll('.banner-dot');
