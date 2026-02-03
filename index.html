@@ -1410,16 +1410,44 @@ document.getElementById('year').textContent = new Date().getFullYear();
 document.addEventListener('DOMContentLoaded', function() {
     const namespace = 'steven_portfolio_2026'; // Unique identifier for your site
     const key = 'total_visits';
-    
-    // Fetch current count
-    fetch(`https://countapi.xyz/hit/${namespace}/${key}`)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('visitCount').textContent = data.value.toLocaleString();
+    const visitEl = document.getElementById('visitCount');
+
+    function showError(msg) {
+        console.error('Visit counter:', msg);
+        if (visitEl) visitEl.textContent = '---';
+    }
+
+    // Use the official API subdomain and provide a fallback to `get` if `hit` fails.
+    const primaryUrl = `https://api.countapi.xyz/hit/${namespace}/${key}`;
+    const fallbackUrl = `https://api.countapi.xyz/get/${namespace}/${key}`;
+
+    // Add a timeout to catch hanging requests
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 7000);
+
+    fetch(primaryUrl, { signal: controller.signal })
+        .then(response => {
+            clearTimeout(timeoutId);
+            if (!response.ok) {
+                console.warn('CountAPI hit returned non-OK status', response.status);
+                // Try the fallback `get` endpoint (doesn't increment)
+                return fetch(fallbackUrl).then(r => {
+                    if (!r.ok) throw new Error('Fallback get failed: ' + r.status);
+                    return r.json();
+                });
+            }
+            return response.json();
         })
-        .catch(error => {
-            console.error('Visit counter error:', error);
-            document.getElementById('visitCount').textContent = '---';
+        .then(data => {
+            if (!data || typeof data.value === 'undefined') throw new Error('Unexpected API response: ' + JSON.stringify(data));
+            visitEl.textContent = Number(data.value).toLocaleString();
+        })
+        .catch(err => {
+            if (err.name === 'AbortError') {
+                showError('Request timed out');
+            } else {
+                showError(err.message || err);
+            }
         });
 });
 
