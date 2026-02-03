@@ -787,17 +787,37 @@ gap: 0.5rem;
 font-weight: 500;
 }
 .footer-meta {
-color: var(--text-secondary);
-opacity: 0.8;
 display: flex;
 align-items: center;
 justify-content: center;
-gap: 0.75rem;
+gap: 1.5rem;
 flex-wrap: wrap;
 margin-top: 0.5rem;
 }
 .footer-icon {
 font-size: 1.2rem;
+}
+/* Visit Counter Styles */
+.visit-counter {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+padding: 0.5rem 1rem;
+background: rgba(30, 41, 59, 0.7);
+border-radius: 20px;
+border: 1px solid var(--border-color);
+font-size: 0.95rem;
+transition: var(--transition);
+}
+.visit-counter:hover {
+background: rgba(34, 211, 238, 0.1);
+border-color: var(--accent-cyan);
+}
+.counter-number {
+font-weight: 700;
+color: var(--accent-cyan);
+min-width: 40px;
+text-align: center;
 }
 /* Utility Classes */
 .section-d3 {
@@ -923,7 +943,7 @@ position: relative;
 width: 320px;
 background: #0f0f0f;
 border-radius: 48px;
-box-shadow: 
+box-shadow:
 0 12px 40px rgba(0, 0, 0, 0.6),
 0 0 0 10px #1a1a1a,
 0 0 0 11px #0a0a0a;
@@ -1095,6 +1115,10 @@ right: 1.5rem;
 width: 48px;
 height: 48px;
 font-size: 1.25rem;
+}
+.footer-meta {
+flex-direction: column;
+gap: 0.5rem;
 }
 }
 </style>
@@ -1346,6 +1370,11 @@ font-size: 1.25rem;
 <div class="footer-meta">
 <div><i class="fas fa-code"></i> Crafted with passion for game development</div>
 <div><i class="fas fa-gamepad"></i> Specializing in playable ads since 2018</div>
+<div class="visit-counter">
+<i class="fas fa-eye"></i>
+<span>Visits: </span>
+<span id="visitCount" class="counter-number">0</span>
+</div>
 </div>
 </footer>
 <!-- Floating Action Button -->
@@ -1376,6 +1405,24 @@ font-size: 1.25rem;
 <script>
 // Set current year in footer
 document.getElementById('year').textContent = new Date().getFullYear();
+
+// Visit Counter using CountAPI
+document.addEventListener('DOMContentLoaded', function() {
+    const namespace = 'steven_portfolio_2026'; // Unique identifier for your site
+    const key = 'total_visits';
+    
+    // Fetch current count
+    fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('visitCount').textContent = data.value.toLocaleString();
+        })
+        .catch(error => {
+            console.error('Visit counter error:', error);
+            document.getElementById('visitCount').textContent = '---';
+        });
+});
+
 // Banner video rotation with sequential playback and content changes
 const bannerVideo = document.getElementById('bannerVideo');
 const bannerDots = document.querySelectorAll('.banner-dot');
